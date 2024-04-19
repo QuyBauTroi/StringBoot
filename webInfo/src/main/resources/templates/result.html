@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Kết Quả</h1>
+<div th:if="${result != null}">
+    <p>Result: <span th:text="${result}"></span></p>
+</div>
+<div th:unless="${result != null}">
+    <p>No result found.</p>
+</div>
+<a href="/">Back</a>
+</body>
+</html>

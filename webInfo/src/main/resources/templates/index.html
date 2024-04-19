@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<h1>Cho dãy số</h1>
+<h1>10, 5, 3, 12, 6, 7, 5, 3</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Tìm các giá trị chẵn trong list</th>
+        <th>
+            <a th:href="@{/even}">Xem chi tiết</a>
+        </th>
+    </tr>
+    </thead>
+    <thead>
+    <tr>
+        <th>Tìm các giá trị > 5 trong list</th>
+        <th>
+            <a th:href="@{/greaterthanfive}">Xem chi tiết</a>
+        </th>
+    </tr>
+    </thead>
+    <thead>
+    <tr>
+        <th>Tìm giá trị max trong list</th>
+        <th>
+            <a th:href="@{/max}">Xem chi tiết</a>
+        </th>
+    </tr>
+    </thead>
+    <thead>
+    <tr>
+        <th>Tìm giá trị min trong list</th>
+        <th>
+            <a th:href="@{/min}">Xem chi tiết</a>
+        </th>
+    </tr>
+    </thead>
+    <thead>
+    <tr>
+        <th>Tính tổng các phần tử của mảng</th>
+        <th>
+            <a th:href="@{/sum}">Xem chi tiết</a>
+        </th>
+    </tr>
+    </thead>
+    <thead>
+    <tr>
+        <th>Lấy danh sách các phần tử không trùng nhau</th>
+        <th>
+            <a th:href="@{/distinctNumbers}">Xem chi tiết</a>
+        </th>
+    </tr>
+    </thead>
+    </thead>
+    <thead>
+    <tr>
+        <th>Lấy 5 phần tử đầu tiên trong mảng</th>
+        <th>
+            <a th:href="@{/firstElements}">Xem chi tiết</a>
+        </th>
+    </tr>
+    </thead>
+    </thead>
+    <thead>
+    <tr>
+        <th>Lấy phần tử từ thứ 3 -> thứ 5</th>
+        <th>
+            <a th:href="@{/subList}">Xem chi tiết</a>
+        </th>
+    </tr>
+    </thead>
+    </thead>
+    <thead>
+    <tr>
+        <th>Lấy phần tử đầu tiên > 5</th>
+        <th>
+            <a th:href="@{/firstGreaterThan5}">Xem chi tiết</a>
+        </th>
+    </tr>
+    </thead>
+</table>
+
+<script th:src="@{/main.js}"></script>
+</body>
+</html>
