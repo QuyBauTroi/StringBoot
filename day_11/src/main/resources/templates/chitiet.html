@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@700&display=swap');
+        :root{
+            --green:#00E77F;
+            --white:#fff;
+            --black:#3d3d3d;
+            --light-white:#aaa;
+            --light-bg:#4b4b4b;
+        }
+        *{
+            font-family: 'Rubik', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            border: none;
+            text-decoration: none;
+            transform: .2s linear;
+            text-transform: capitalize;
+        }
+        *::selection{
+            background-color: #fff;
+            color: #4b4b4b;
+        }
+
+        html{
+            font-size: 62.5%;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            scroll-padding-top: 8rem;
+        }
+
+        ::-webkit-scrollbar{
+            height: .5rem;
+            width: 1rem;
+        }
+
+        ::-webkit-scrollbar-track{
+            background-color: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb{
+            background-color: #fff;
+            border-radius: 5rem;
+        }
+
+        body{
+            background-color: #3d3d3d;
+        }
+
+        section{
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+
+
+
+
+
+
+
+
+        /* header custom file */
+        .header{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background-color: #4b4b4b;
+        }
+
+        .header .flex{
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+        }
+
+        .header .flex .logo{
+            font-size: 2.5rem;
+            color: #fff;
+        }
+
+        .header .flex .navbar a{
+            margin: 10px;
+            color: #aaa;
+            font-size: 2rem;
+        }
+
+        .header .flex .navbar a:hover{
+            color: #fff;
+        }
+
+        #menu{
+            cursor: pointer;
+            color: #fff;
+            font-size: 25px;
+            display: none;
+        }
+        /* header custom file */
+
+
+
+
+
+
+
+
+
+
+
+
+        /* home custom file*/
+        .home{
+            margin-top: 60px;
+        }
+
+        .home .row{
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap-reverse;
+            gap: 15px;
+        }
+
+        .home .row .content{
+            flex: 1 1 40rem;
+            align-items: center;
+            text-align: center;
+        }
+
+        .home .row .imgage{
+            flex: 1 1 40rem;
+        }
+
+        .home .row .imgage img{
+            width: 100%;
+        }
+
+        .home .row .content h3{
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #fff;
+            line-height: 1;
+        }
+        .content{
+            display: flex;
+            justify-content: space-between;
+        }
+        .btn{
+            display: inline-block;
+            margin-top: 10px;
+            border-radius: 50px;
+            font-size: 18px;
+            background-color: #4b4b4b;
+            color: #fff;
+            padding: 10px 30px;
+
+        }
+
+        .btn:hover{
+            color: #3d3d3d;
+            background-color: #fff;
+        }
+
+        .cout .box-container{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(27rem, 1fr));
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .cout .box-container .box{
+            background-color: #4b4b4b;
+            border-radius: 5px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .cout .box-container .box i{
+            font-size: 50px;
+            color: #00E77F;
+        }
+
+        .cout .box-container .box h3{
+            font-size: 25px;
+            color: #fff;
+        }
+
+        .cout .box-container .box p{
+            color: #aaa;
+            font-size: 15px;
+        }
+        /* home custom file*/
+
+
+
+
+
+
+
+
+
+
+        /* about custom file */
+        .about{
+            padding-top: 60px;
+        }
+
+        .about .row{
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .about .row .imgage{
+            flex:1 1 40rem;
+        }
+
+        .about .row .imgage img{
+            width: 110%;
+        }
+
+        .about .row .content{
+            flex:1 1 40rem;
+            text-align: center;
+        }
+
+        .about .row .content h3{
+            color: #fff;
+            font-size: 35px;
+            padding-bottom: 10px;
+        }
+
+        .about .row .content p{
+            color: #aaa;
+            font-size: 13px;
+            line-height: 18px;
+        }
+        /* about custom file */
+
+
+
+
+
+
+
+
+
+
+
+        /* courses custom */
+        .heading{
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 50px;
+            color: #fff;
+            margin-top: 40px;
+        }
+
+        .heading span{
+            color: #00E77F;
+        }
+
+        .courses .swiper-slide{
+            background-color: #4b4b4b;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+
+        .courses .swiper-slide img{
+            width: 100%;
+            height: 45rem;
+        }
+
+        .courses .swiper-slide h3{
+            font-size: 20px;
+            color: #fff;
+            margin: 15px 0;
+        }
+
+        .courses .swiper-slide p{
+            font-size: 12px;
+            color: #aaa;
+            line-height: 2;
+            padding-bottom: 10px;
+        }
+
+        .swiper-pagination-bullet{
+            background-color: #fff;
+        }
+        .swiper-pagination-bullet-active{
+            background-color: #00E77F;
+        }
+
+        /* courses custom */
+        .list-1{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(24rem, 2fr));
+            gap: 10px;
+
+        }
+        .card{
+            margin: 0 auto;
+            border: 2px solid #4b4b4b;
+            border-radius: 10px;
+        }
+        .list-1 .card .h3{
+            align-items: center;
+        }
+
+
+        .breadcrumb{
+            margin-top: 100px;
+            font-size: 20px;
+            color: #fff;
+
+            list-style: none;
+            display: flex;
+        }
+
+        .breadcrumb {
+            padding: 10px;
+        }
+
+        .breadcrumb ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .breadcrumb ul li {
+            display: inline;
+            margin-right: 5px;
+            font-size: 14px;
+        }
+
+        .breadcrumb ul li:not(:last-child):after {
+            content: ">";
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+        .in-fo{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(24rem, 2fr));
+            gap: 10px;
+        }
+        .in-fo .info-film h1{
+            font-size: 40px;
+            color: #fff;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+<!--Header starts-->
+<header class="header">
+    <section class="flex">
+        <a href="#Home" class="logo">PHIMMOI.</a>
+        <nav class="navbar">
+            <a href="index.html">Trang chủ</a>
+            <a href="phimbo.html">Phim bộ</a>
+            <a href="phimle.html">Phim lẻ</a>
+            <a href="#teachers">Phim chiếu rạp</a>
+
+        </nav>
+        <div id="menu" class="fas fa-bars"></div>
+
+    </section>
+</header>
+<!--Header ends-->
+
+
+<section class="breadcrumb">
+    <ul>
+        <li><a href="index.html" style="color:#aaa; text-transform: uppercase;">Trang chủ</a></li>
+
+        <li><a href="phimle.html" style="color: #aaa; text-transform: uppercase;">Phim lẻ </a></li>
+
+        <li>Queen of Tears</li>
+    </ul>
+</section>
+<section class="content">
+    <!-- Nội dung trang web sẽ được thêm vào đây -->
+</section>
+
+<section class="in-fo">
+    <img src="https://i.mpcdn.top/c/16Jxw1K/nu-hoang-nuoc-mat.jpg?1714322304" style="width: 400px; height: 550px;">
+    <div class="info-film">
+        <h1>Queen of Tears (2024)</h1>
+        <h2 style="margin-top: 20px; color: #fff; font-size: 20px;">So luot xe : <span style="color: #aaa; font-size: 15px;">  2222</span></h2>
+        <h2 style="margin-top: 20px; color: #fff; font-size: 20px;">The loai : <span style="color: #aaa; font-size: 15px;">  Phim le</span></h2>
+        <p style="color: #fff; font-size: 20px; margin-top: 20px;">Nữ Hoàng Nước Mắt, Queen of Tears 2024 HD<br>
+            Nữ Hoàng Nước Mắt là câu chuyện về một nữ hoàng cửa hàng bách hóa và hoàng tử siêu thị đang phải đối mặt với khủng hoảng hôn nhân. Họ đã trải qua nhiều sóng gió, nhưng cuối cùng tình yêu đã trỗi dậy và bắt đầu nảy nở theo cách kỳ diệu. Cuộc sống của họ trở nên ngọt ngào hơn khi họ hiểu rằng tình yêu không chỉ là sự kiên nhẫn và hy sinh, mà còn là sức mạnh để vượt qua mọi khó khăn.
+        </p>
+        <h3 style="margin-top: 20px; color: #fff; font-size: 15px;">Rating : <span style="color: #aaa;">4.2<i style="color: yellow;" class="fa-solid fa-star"></i></span></h3>
+        <a  style="margin-top: 20px; margin-left: -10px" href="#more" class="btn">Xem them</a>
+    </div>
+</section>
+
+
+
+<section class="home" id="home">
+    <div class="row">
+        <div class="content">
+            <h3>Phim de xuat</h3>
+
+        </div>
+
+
+    </div>
+</section>
+
+<section class="list-1">
+    <div class="card">
+        <img src="https://i.mpcdn.top/c/16Jxw1K/nu-hoang-nuoc-mat.jpg?1714322304" style="width: 250px; height: 350px;">
+        <h3 style="font-size: 20px;color: #fff; margin-left: 50px;">Queen of Tears</h3>
+    </div>
+    <div class="card">
+        <img src="https://i.mpcdn.top/c/16Jxw1K/nu-hoang-nuoc-mat.jpg?1714322304"style="width: 250px; height: 350px;">
+        <h3 style="font-size: 20px;color: #fff; margin-left: 50px;">Queen of Tears</h3>
+    </div>
+    <div class="card">
+        <img src="https://i.mpcdn.top/c/16Jxw1K/nu-hoang-nuoc-mat.jpg?1714322304"style="width: 250px; height: 350px;">
+        <h3 style="font-size: 20px;color: #fff; margin-left: 50px;">Queen of Tears</h3>
+    </div>
+    <div class="card">
+        <img src="https://i.mpcdn.top/c/16Jxw1K/nu-hoang-nuoc-mat.jpg?1714322304"style="width: 250px; height: 350px;">
+        <h3 style="font-size: 20px;color: #fff; margin-left: 50px;">Queen of Tears</h3>
+    </div>
+    <div class="card">
+        <img src="https://i.mpcdn.top/c/16Jxw1K/nu-hoang-nuoc-mat.jpg?1714322304"style="width: 250px; height: 350px;">
+        <h3 style="font-size: 20px;color: #fff; margin-left: 50px;">Queen of Tears</h3>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+<script src="main.js"></script>
+
+</body>
+</html>
