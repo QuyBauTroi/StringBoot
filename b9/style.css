@@ -47,13 +47,10 @@ body{
   background-color: #3d3d3d;
 }
 
-section{
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 20px;
+
+.all{
+  
 }
-
-
 
 
 
@@ -194,6 +191,7 @@ section{
 .cout .box-container .box p{
   color: #aaa;
   font-size: 15px;
+  
 }
 /* home custom file*/
 
@@ -354,4 +352,9 @@ border-radius: 10px;
 .in-fo .info-film h1{
   font-size: 40px;
   color: #fff;
+  
+}
+ /* CSS để di chuyển nội dung sang phải 100px */
+ .mb-3 {
+  margin-left: 200px; /* Thay đổi giá trị này để điều chỉnh khoảng cách */
 }

@@ -1,104 +1,258 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chi tiết phim</title>
+    <link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/image/favicon.ico" type="image/x-icon">
+
+    <!--Css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+          integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+          integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-<!--Header starts-->
-<header class="header">
-    <section class="flex">
-        <a href="#Home" class="logo">PHIMMOI.</a>
-        <nav class="navbar">
-            <a href="index.html">Trang chủ</a>
-            <a href="phimbo.html">Phim bộ</a>
-            <a href="phimle.html">Phim lẻ</a>
-            <a href="#teachers">Phim chiếu rạp</a>
-
-        </nav>
-        <div id="menu" class="fas fa-bars"></div>
-    
-    </section>
+<header class="bg-dark">
+    <nav class="navbar navbar-expand-lg ">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="https://motchilltv.ac/_ipx/s_150x35/logo.png" alt="logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active text-white" href="index.html">Trang chủ</a>
+                    <a class="nav-link text-white" href="phimbo.html">Phim bộ</a>
+                    <a class="nav-link text-white" href="phimle.html">Phim lẻ</a>
+                    <a class="nav-link  text-white"  href="@{/phim-chieu-rap}">Phim chiếu rạp</a>
+                    <a class="nav-link  text-white"  href="@{/tin-tuc}">Tin tức</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 </header>
-<!--Header ends-->
 
+<section class="all" style="max-width: 1500px;
+margin: 0 auto;
+padding: 0;
+background-color: #E9ECEF;">
 
-<section class="breadcrumb">
-    <ul>
-        <li><a href="index.html" style="color:#aaa; text-transform: uppercase;">Trang chủ</a></li>
-        
-        <li><a href="phimle.html" style="color: #aaa; text-transform: uppercase;">Phim lẻ </a></li>
-        
-        <li>Queen of Tears</li>
-    </ul>
-</section>
-<section class="content">
-    <!-- Nội dung trang web sẽ được thêm vào đây -->
-</section>
-
-<section class="in-fo">
-    <img src="https://i.mpcdn.top/c/16Jxw1K/nu-hoang-nuoc-mat.jpg?1714322304" style="width: 400px; height: 550px;">
-    <div class="info-film">
-        <h1>Queen of Tears (2024)</h1>
-        <h2 style="margin-top: 20px; color: #fff; font-size: 20px;">So luot xe : <span style="color: #aaa; font-size: 15px;">  2222</span></h2>
-        <h2 style="margin-top: 20px; color: #fff; font-size: 20px;">The loai : <span style="color: #aaa; font-size: 15px;">  Phim le</span></h2>
-        <p style="color: #fff; font-size: 20px; margin-top: 20px;">Nữ Hoàng Nước Mắt, Queen of Tears 2024 HD<br>
-            Nữ Hoàng Nước Mắt là câu chuyện về một nữ hoàng cửa hàng bách hóa và hoàng tử siêu thị đang phải đối mặt với khủng hoảng hôn nhân. Họ đã trải qua nhiều sóng gió, nhưng cuối cùng tình yêu đã trỗi dậy và bắt đầu nảy nở theo cách kỳ diệu. Cuộc sống của họ trở nên ngọt ngào hơn khi họ hiểu rằng tình yêu không chỉ là sự kiên nhẫn và hy sinh, mà còn là sức mạnh để vượt qua mọi khó khăn.
-        </p> 
-        <h3 style="margin-top: 20px; color: #fff; font-size: 15px;">Rating : <span style="color: #aaa;">4.2<i style="color: yellow;" class="fa-solid fa-star"></i></span></h3>
-        <a  style="margin-top: 20px; margin-left: -10px" href="#more" class="btn">Xem them</a>
-    </div>
-</section>
-
-
-
-<section class="home" id="home">
-    <div class="row">
-        <div class="content">
-            <h3>Phim de xuat</h3>
-
+<section class="py-4 bg-body-secondary">
+    <div class="container ">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a style="text-decoration: none; color: black" th:href="@{/}">Motchill</a></li>
+                    <li class="breadcrumb-item"><a style="text-decoration: none; color: black" href="#">Hàn Quốc</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" th:text="${movie.getName()}"></li>
+                </ol>
+            </nav>
         </div>
 
-        
+        <div class="row">
+            <div class="col-4">
+                <div class="movie-item h-150">
+                    <div class="overflow-hidden">
+                        <img
+                                src="https://vn.phimmoitv.org/storage/images/nu-hoang-nuoc-mat/nu-hoang-nuoc-mat-thumb.jpg"
+                                class="img-fluid rounded"
+                                alt="movie-poster"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="card-body pt-2 overflow-hidden">
+                    <h3 class="card-title" th:text="${movie.getName()}"></h3>
+                    <p class="card-text text-secondary" th:text="${movie.getName()}+' ('+${movie.getReleaseYear()}+')'">Queen of Tears (2024)</p>
+                    <p class="card-text">
+                        <small class="text-secondary" th:text="${movie.getCreatedAt()}">Apr 28, 2024</small>
+                    </p>
+                    <p>
+                        <span th:text="${movie.getReleaseYear()}"></span> · <a style="text-decoration: none; color: black" href="">Hàn Quốc</a> ·
+                    <span th:switch="${movie.getType()}">
+                        <a style="text-decoration: none; color: black" th:case="${movieTypes.get(1)}" th:href="@{/phim-le}" >Phim lẻ</a>
+                        <a style="text-decoration: none; color: black" th:case="${movieTypes.get(0)}" th:href="@{/phim-bo}" >Phim bộ</a>
+                        <a style="text-decoration: none; color: black" th:case="${movieTypes.get(2)}" th:href="@{/phim-chieu-rap}" >Phim chiếu rạp</a>
+                    </span>
+                    </p>
+                    <p>Thể Loại: <a style="text-decoration: none; color: black" href="">Tình Cảm</a>, <a style="text-decoration: none; color: black" href="">Tâm Lý</a></p>
+                    <p th:text="${movie.getDescription()}">
+
+                    </p>
+                    <p>
+                        Rating: <th:block th:text="${movie.getRating()}"></th:block> <i class="fas fa-star" style="color: #ffd43b"></i>
+                    </p>
+                    <button type="button" class="btn btn-secondary mt-1">Xem ngay</button>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
-<section class="list-1">
-    <div class="card">
-        <img src="https://i.mpcdn.top/c/16Jxw1K/nu-hoang-nuoc-mat.jpg?1714322304" style="width: 250px; height: 350px;">
-        <h3 style="font-size: 20px;color: #fff; margin-left: 50px;">Queen of Tears</h3>
-    </div>
-    <div class="card">
-        <img src="https://i.mpcdn.top/c/16Jxw1K/nu-hoang-nuoc-mat.jpg?1714322304"style="width: 250px; height: 350px;">
-        <h3 style="font-size: 20px;color: #fff; margin-left: 50px;">Queen of Tears</h3>
-    </div>
-    <div class="card">
-        <img src="https://i.mpcdn.top/c/16Jxw1K/nu-hoang-nuoc-mat.jpg?1714322304"style="width: 250px; height: 350px;">
-        <h3 style="font-size: 20px;color: #fff; margin-left: 50px;">Queen of Tears</h3>
-    </div>
-    <div class="card">
-        <img src="https://i.mpcdn.top/c/16Jxw1K/nu-hoang-nuoc-mat.jpg?1714322304"style="width: 250px; height: 350px;">
-        <h3 style="font-size: 20px;color: #fff; margin-left: 50px;">Queen of Tears</h3>
-    </div>
-    <div class="card">
-        <img src="https://i.mpcdn.top/c/16Jxw1K/nu-hoang-nuoc-mat.jpg?1714322304"style="width: 250px; height: 350px;">
-        <h3 style="font-size: 20px;color: #fff; margin-left: 50px;">Queen of Tears</h3>
-    </div>
+
+
+<section style=" max-width:1320px; border-radius: 10px; background-color: #CED4DA ;margin: 0 auto; padding: 0 ;background-color: rgb(255, 255, 255)">
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="background-color: #CED4DA">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" >Thông Tin Phim</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Danh Sách Tập</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Diễn Viên</button>
+        </li>
+      </ul>
+      <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+            <p style="text-align: center;">Noi Dung Phim</p>
+        </div>
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+            <p style="text-align: center;">Danh sách tập</p>
+        </div>
+        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+            <p style="text-align: center;">Diễn Viên</p>
+        </div>
+      </div>
+      
 </section>
 
 
+<section class="py-4 bg-body-secondary">
+    <div class="container bg-dark-subtle rounded-4 p-4">
+        <div class="d-flex justify-content-start align-items-center mb-2">
+            <i class="far fa-star" style="color: #FFD43B;"></i>
+            <h3 class="ms-2">Phim đề cử</h3>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div class="movie-item">
+                    <div class="movie-poster overflow-hidden">
+                        <img class="w-100 h-100 rounded " src="https://image.motchilltv.ac/motchill/nu-hoang-nuoc-mat-x350.webp" alt="movie-poster">
+                    </div>
+                    <h5 class="mt-2">Nữ hoàng nước mắt</h5>
+                    <p class="text-body-tertiary">Queen of tears</p>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="movie-item">
+                    <div class="movie-poster overflow-hidden">
+                        <img class="w-100 h-100 rounded " src="https://image.motchilltv.ac/motchill/nu-hoang-nuoc-mat-x350.webp" alt="movie-poster">
+                    </div>
+                    <h5 class="mt-2">Nữ hoàng nước mắt</h5>
+                    <p class="text-body-tertiary">Queen of tears</p>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="movie-item">
+                    <div class="movie-poster overflow-hidden">
+                        <img class="w-100 h-100 rounded " src="https://image.motchilltv.ac/motchill/nu-hoang-nuoc-mat-x350.webp" alt="movie-poster">
+                    </div>
+                    <h5 class="mt-2">Nữ hoàng nước mắt</h5>
+                    <p class="text-body-tertiary">Queen of tears</p>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="movie-item">
+                    <div class="movie-poster overflow-hidden">
+                        <img class="w-100 h-100 rounded " src="https://image.motchilltv.ac/motchill/nu-hoang-nuoc-mat-x350.webp" alt="movie-poster" >
+                    </div>
+                    <h5 class="mt-2">Nữ hoàng nước mắt</h5>
+                    <p class="text-body-tertiary">Queen of tears</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+</section>
+
+<footer class="bg-dark py-4 text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <a href="#">
+                    <img src="/image/logo.png" alt="logo" class="logo">
+                </a>
+                <p class="mt-2">Motchill - Xem phim Online Vietsub chất lượng cao miễn phí, nhiều thể loại phim
+                    phong phú, đặc sắc, giao diện trực quan, thuận tiện, tốc độ tải nhanh, thường xuyên cập nhật các
+                    bộ phim mới.</p>
+            </div>
+            <div class="col-2">
+                <h5 class="text-uppercase mb-3">Danh mục</h5>
+                <p><a class="text-white" href="#">Tin tức</a></p>
+                <p><a class="text-white" href="#">Phim chiếu rạp</a></p>
+                <p><a class="text-white" href="#">Phim bộ</a></p>
+                <p><a class="text-white" href="#">Phim lẻ</a></p>
+                <p><a class="text-white" href="#">TV Show</a></p>
+            </div>
+            <div class="col-2">
+                <h5 class="text-uppercase mb-3">Thể loại</h5>
+                <p><a class="text-white" href="">Phim cổ trang</a></p>
+                <p><a class="text-white" href="">Phim đam mỹ</a></p>
+                <p><a class="text-white" href="">Phim bách hợp</a></p>
+                <p><a class="text-white" href="">Phim viễn tưởng</a></p>
+                <p><a class="text-white" href="">Phim hoạt hình</a></p>
+            </div>
+            <div class="col-2">
+                <h5 class="text-uppercase mb-3">Điều khoản</h5>
+                <p><a class="text-white" href="#">DMCA</a></p>
+                <p><a class="text-white" href="#">Liên hệ</a></p>
+                <p><a class="text-white" href="#">Privacy</a></p>
+                <p><a class="text-white" href="#">Terms of Service</a></p>
+            </div>
+
+            <div class="col-2">
+                <h5 class="text-uppercase mb-3">SOCIAL</h5>
+                <div class="d-flex">
+                    <p class="fs-4 me-3">
+                        <a class="text-white" href="#"><span><i class="fa-brands fa-facebook" style="color: white"></i></span></a>
+                    </p>
+                    <p class="fs-4 me-3">
+                        <a class="text-white" href="#"><span><i class="fa-brands fa-twitter" style="color: white"></i></span></a>
+                    </p>
+                    <p class="fs-4 me-2">
+                        <a class="text-white" href="#"><span><i class="fa-brands fa-youtube" style="color: white"></i></span></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 
 
-    
-
-
-    
-
-	<script src="main.js"></script>
-	
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+        integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
+        integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="/js/common.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".movie-list").owlCarousel({
+            items: 4,
+            margin: 20,
+            loop: true
+        });
+    });
+</script>
 </body>
 </html>
