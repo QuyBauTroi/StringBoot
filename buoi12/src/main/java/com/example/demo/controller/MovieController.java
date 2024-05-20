@@ -25,7 +25,7 @@ public class MovieController {
     BlogService blogService;
 
 
-   @GetMapping("/")
+   @GetMapping("/index")
     public String index(Model model) {
        List<Blog> ListBlog =blogService.getBlogByStatus(true,1,4).getContent();
        List<Movie> listPhimHot =movieService.findByStatus(true);
