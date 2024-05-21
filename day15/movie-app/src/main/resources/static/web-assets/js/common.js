@@ -14,6 +14,39 @@ function activeMenu() {
 }
 activeMenu()
 
+// xu ly log out
+
+document.getElementById("logout").addEventListener("click", function (event) {
+    event.preventDefault();
+
+    fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+    })
+        .then(response => {
+            if (response.ok) {
+                toastr.success('Đăng xuất thành công');
+                setTimeout(() => {
+                    window.location.href = '/dang-nhap';
+                }, 1000);
+            } else {
+                // Handle errors
+                response.json().then(data => {
+                    toastr.error('Đăng xuất thất bại: ' + data.message, 'Error');
+                }).catch(() => {
+                    toastr.error('Đăng xuất thất bại', 'Error');
+                });
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            toastr.error('Đăng xuất thất bại', 'Error');
+        });
+})
+
 toastr.options = {
     "closeButton": false,
     "debug": false,

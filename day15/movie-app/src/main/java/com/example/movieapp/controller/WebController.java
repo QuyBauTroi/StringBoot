@@ -1,12 +1,12 @@
 package com.example.movieapp.controller;
 
-import com.example.movieapp.entity.Episode;
-import com.example.movieapp.entity.Movie;
-import com.example.movieapp.entity.Review;
+import com.example.movieapp.entity.*;
 import com.example.movieapp.model.enums.MovieType;
 import com.example.movieapp.service.EpisodeService;
+import com.example.movieapp.service.FavouriteService;
 import com.example.movieapp.service.MovieService;
 import com.example.movieapp.service.ReviewService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -23,6 +23,8 @@ public class WebController {
     private final MovieService movieService;
     private final ReviewService reviewService;
     private final EpisodeService episodeService;
+    private final FavouriteService favouriteService;
+    private final HttpSession session;
 
     @GetMapping("/")
     public String getHomePage(Model model) {
@@ -88,5 +90,22 @@ public class WebController {
     @GetMapping("/dang-ky")
     public String getRegisterPage() {
         return "web/register";
+    }
+    @GetMapping("/thong-tin-ca-nhan")
+    public String getInfoUserPage() {
+        return "web/thong-tin-ca-nhan";
+    }
+    @GetMapping("/phim-yeu-thich")
+    public String phimYeuThich(Model model) {
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser != null) {
+            List<Favorite> favoriteMovies = favouriteService.getFavoritesByUser(currentUser.getId());
+            model.addAttribute("favoriteMovies", favoriteMovies);
+        }
+        return "web/phim-yeu-thich";
+    }
+    @GetMapping("/doi-mat-khau")
+    public String getDoiMatKhauPage() {
+        return "web/doi-mat-khau";
     }
 }

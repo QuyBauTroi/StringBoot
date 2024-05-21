@@ -28,4 +28,6 @@ public class Favorite {
     @ManyToOne
     @JoinColumn(name = "movie_id")
     Movie movie;
+
+
 }

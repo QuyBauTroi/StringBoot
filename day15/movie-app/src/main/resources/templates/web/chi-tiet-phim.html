@@ -24,51 +24,7 @@
     <link rel="stylesheet" href="/web-assets/css/style.css">
 </head>
 <body>
-<header class="bg-dark header">
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <img src="/web-assets/image/logo.png" alt="logo" class="logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#main-menu" aria-controls="main-menu" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-between align-items-center" id="main-menu">
-                <div class="navbar-nav">
-                    <a class="nav-link text-white" href="/">Trang chủ</a>
-                    <a class="nav-link text-white" href="/phim-bo">Phim bộ</a>
-                    <a class="nav-link text-white" href="/phim-chieu-rap">Phim chiếu rạp</a>
-                    <a class="nav-link text-white" href="/phim-le">Phim lẻ</a>
-                    <a class="nav-link text-white" href="/tin-tuc">Tin tức</a>
-                </div>
-                <div>
-                    <div th:if="${session.currentUser == null}">
-                        <a class="text-white" href="/dang-nhap">Đăng nhập</a>
-                    </div>
-                    <div th:if="${session.currentUser != null}">
-                        <div class="dropdown">
-                            <a class="btn btn-secondary dropdown-toggle nav-link text-white" href="#" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false" th:text="${session.currentUser.name}">
-                                Dropdown link
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#"
-                                       th:if="${session.currentUser.role.toString().equals('ADMIN')}">Trang quản trị</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
-                                <li><a class="dropdown-item" href="#">Lịch sử xem phim</a></li>
-                                <li><a class="dropdown-item" href="#">Phim yêu thích</a></li>
-                                <li><a class="dropdown-item"  id="logout" href="#">Đăng xuất</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-</header>
+<th:block th:replace="~{/web/fragment/header :: header}"></th:block>
 
 <section class="py-4">
     <div class="container">
@@ -83,8 +39,7 @@
                         <a class="text-primary" th:case="*" href="#">Không xác định</a> <!-- Trường hợp mặc định -->
                     </a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="${movie.name}">Đầu Gấu Đụng Đầu Đất
-                </li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="${movie.name}"></li>
             </ol>
         </nav>
         <div class="row mt-4">
@@ -159,9 +114,17 @@
                     <a class="d-inline-block btn btn-danger px-5 py-2 mt-3 rounded"
                        th:href="@{/xem-phim/{id}/{slug} (id=${movie.id}, slug=${movie.slug}, tap='full')}">
                         <span><i class="fa-solid fa-play"></i></span>
-                        Xem phim</a>
+                        Xem them</a>
                 </th:block>
-
+                <button type="submit" class="btn btn-primary"  style="margin-top: 10px; border-radius: 50px"><i class="fa-solid fa-play" style="padding: 10px"></i>Xem Phim</button>
+                <button type="button" class="btn btn-primary add-to-favorite" style="margin-top: 10px; border-radius: 50px">
+                    <i class="fa-solid fa-heart" style="padding: 10px"></i>
+                    Thêm vào danh sách yêu thích
+                </button>
+                <button type="button" class="btn btn-primary remove-from-favorite" style="margin-top: 10px; border-radius: 50px; display: none">
+                    <i class="fa-solid fa-trash" style="padding: 10px"></i>
+                    Loại khỏi danh sách yêu thích
+                </button>
             </div>
         </div>
 
@@ -188,7 +151,7 @@
                             <img class="w-100 h-100"
                                  th:src="${movie.poster}" th:alt="${movie.name}">
                         </div>
-                        <p class="mt-2" th:text="${movie.name}">Cô Đi Mà Lấy Chồng Tôi</p>
+                        <p class="mt-2" th:text="${movie.name}"></p>
                     </a>
                 </div>
             </div>
@@ -227,13 +190,7 @@
                                 <span><th:block th:text="${review.rating}"></th:block>/10 Tuyệt vời</span>
                             </p>
                         </div>
-                        <p class="rating-content mt-1 mb-0 text-muted" th:text="${review.content}">Phim xem ổn. Điểm
-                            nhấn chính là sự hài hước và
-                            tiết
-                            tấu. Kết phim chưa thực sự hài lòng. 1 số nhân vật hoành tráng
-                            ở đầu và giữa phim, thì cuối phim mờ nhạt. Diễn biến phim hoặc
-                            chưa dành đủ thời gian, hoặc chưa nhấn mạnh đủ để dẫn đến các
-                            kết quả ở cuối phim.</p>
+                        <p class="rating-content mt-1 mb-0 text-muted" th:text="${review.content}"></p>
                         <div th:if="${session.currentUser != null && session.currentUser.id == review.user.id}">
                             <button class="border-0 bg-transparent btn-edit-review text-primary me-2 text-decoration-underline">
                                 Sửa
@@ -308,58 +265,66 @@
     </div>
 </div>
 
-<footer class="bg-dark py-4 text-white">
-    <div class="container">
-        <div class="row">
-            <div class="col-4">
-                <a href="#">
-                    <img src="/web-assets/image/logo.png" alt="logo" class="logo">
-                </a>
-                <p class="mt-2">Motchill - Xem phim Online Vietsub chất lượng cao miễn phí, nhiều thể loại phim
-                    phong phú, đặc sắc, giao diện trực quan, thuận tiện, tốc độ tải nhanh, thường xuyên cập nhật các
-                    bộ phim mới.</p>
-            </div>
-            <div class="col-2">
-                <h5 class="text-uppercase mb-3">Danh mục</h5>
-                <p><a class="text-white" href="#">Tin tức</a></p>
-                <p><a class="text-white" href="#">Phim chiếu rạp</a></p>
-                <p><a class="text-white" href="#">Phim bộ</a></p>
-                <p><a class="text-white" href="#">Phim lẻ</a></p>
-                <p><a class="text-white" href="#">TV Show</a></p>
-            </div>
-            <div class="col-2">
-                <h5 class="text-uppercase mb-3">Thể loại</h5>
-                <p><a class="text-white" href="">Phim cổ trang</a></p>
-                <p><a class="text-white" href="">Phim đam mỹ</a></p>
-                <p><a class="text-white" href="">Phim bách hợp</a></p>
-                <p><a class="text-white" href="">Phim viễn tưởng</a></p>
-                <p><a class="text-white" href="">Phim hoạt hình</a></p>
-            </div>
-            <div class="col-2">
-                <h5 class="text-uppercase mb-3">Điều khoản</h5>
-                <p><a class="text-white" href="#">DMCA</a></p>
-                <p><a class="text-white" href="#">Liên hệ</a></p>
-                <p><a class="text-white" href="#">Privacy</a></p>
-                <p><a class="text-white" href="#">Terms of Service</a></p>
-            </div>
+<th:block th:replace="~{/web/fragment/footer :: footer}"></th:block>
+<script>
+    const addToFavoriteBtn = document.querySelector('.add-to-favorite');
+    const removeFromFavoriteBtn = document.querySelector('.remove-from-favorite');
+    addToFavoriteBtn.addEventListener('click', async () => {
+        try {
+            const response = await axios.post('/api/add-to-favorites', { movieId: movie.id });
+            if (response.status === 200) {
+                addToFavoriteBtn.style.display = 'none';
+                removeFromFavoriteBtn.style.display = 'block';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+    removeFromFavoriteBtn.addEventListener('click', async () => {
+        try {
+            const response = await axios.post('/api/remove-from-favorites', { movieId: movie.id });
+            if (response.status === 200) {
+                removeFromFavoriteBtn.style.display = 'none';
+                addToFavoriteBtn.style.display = 'block';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+</script>
 
-            <div class="col-2">
-                <h5 class="text-uppercase mb-3">SOCIAL</h5>
-                <div class="d-flex">
-                    <p class="fs-4 me-3">
-                        <a class="text-white" href="#"><span><i class="fa-brands fa-facebook"></i></span></a>
-                    </p>
-                    <p class="fs-4 me-3">
-                        <a class="text-white" href="#"><span><i class="fa-brands fa-twitter"></i></span></a>
-                    </p>
-                    <p class="fs-4 me-2">
-                        <a class="text-white" href="#"><span><i class="fa-brands fa-youtube"></i></span></a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
+<script>
+    document.getElementById("logout").addEventListener("click", function (event) {
+        event.preventDefault();
+
+        fetch('/api/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+            .then(response => {
+                if (response.ok) {
+                    toastr.success('Đăng xuất thành công');
+                    setTimeout(() => {
+                        window.location.href = '/dang-nhap';
+                    }, 1000);
+                } else {
+                    // Handle errors
+                    response.json().then(data => {
+                        toastr.error('Đăng xuất thất bại: ' + data.message, 'Error');
+                    }).catch(() => {
+                        toastr.error('Đăng xuất thất bại', 'Error');
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                toastr.error('Đăng xuất thất bại', 'Error');
+            });
+    })
+</script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="

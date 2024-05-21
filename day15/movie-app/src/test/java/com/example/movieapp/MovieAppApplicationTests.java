@@ -310,27 +310,18 @@ class MovieAppApplicationTests {
     }
 
     @Test
-    void save_favorites() {
+    void save_Favourite() {
+        Random random = new Random();
         List<User> users = userRepository.findByRole(UserRole.USER);
-        List<Movie> movies = movieRepository.findByStatus(true);
-
+        List<Movie> movies = movieRepository.findAll();
         for (User user : users) {
-            // 1 -> 3 favorite movies. Each favorite has a unique movie
-            List<Movie> favoriteMovies = new ArrayList<>();
-            for (int i = 0; i < new Random().nextInt(3) + 1; i++) {
-                Movie movie = movies.get(new Random().nextInt(movies.size()));
-                if (!favoriteMovies.contains(movie)) {
-                    favoriteMovies.add(movie);
-                }
-            }
-
-            for (Movie movie : favoriteMovies) {
-                Favorite favorite = Favorite.builder()
+            for (int i = 0; i < random.nextInt(6) + 5; i++) {
+                Favorite favourite = Favorite.builder()
                         .user(user)
-                        .movie(movie)
+                        .movie(movies.get(random.nextInt(movies.size())))
                         .createdAt(LocalDateTime.now())
                         .build();
-                favoriteRepository.save(favorite);
+                favoriteRepository.save(favourite);
             }
         }
     }

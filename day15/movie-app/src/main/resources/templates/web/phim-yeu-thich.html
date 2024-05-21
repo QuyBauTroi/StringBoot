@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Phim yêu thích</title>
+
+    <link rel="shortcut icon" href="/web-assets/image/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/web-assets/image/favicon.ico" type="image/x-icon">
+
+    <!--Css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+          integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+          integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/web-assets/css/style.css">
+</head>
+<body>
+<th:block th:replace="~{/web/fragment/header :: header}"></th:block>
+
+<div class="container mt-4" style="margin-bottom: 30px">
+    <h3>Phim yêu thích</h3>
+    <div class="row" id="favorite-movies">
+        <div class="col-12">
+            <div class="row row-cols-1 row-cols-md-4 g-2">
+                <div class="col" th:each="favorite : ${favoriteMovies}">
+                    <div class="card h-100" style="width: 300px">
+                        <img th:src="@{${favorite.movie.poster}}" class="card-img-top" alt="Movie Thumbnail">
+                        <div class="card-body" style="height: 300px; padding-bottom: 30px" >
+                            <h5 class="card-title" th:text="${favorite.movie.name}"></h5>
+                            <p class="card-text" th:text="${favorite.movie.description}"></p>
+                            <a th:href="@{/phim/{id}/{slug}(id=${favorite.movie.id}, slug=${favorite.movie.slug})}" class="btn btn-primary">Xem chi tiết</a>
+                            <button class="btn btn-danger">Xóa</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<th:block th:replace="~{/web/fragment/footer :: footer}"></th:block>
+<script>
+    document.getElementById("logout").addEventListener("click", function (event) {
+        event.preventDefault();
+
+        fetch('/api/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+            .then(response => {
+                if (response.ok) {
+                    toastr.success('Đăng xuất thành công');
+                    setTimeout(() => {
+                        window.location.href = '/dang-nhap';
+                    }, 1000);
+                } else {
+                    // Handle errors
+                    response.json().then(data => {
+                        toastr.error('Đăng xuất thất bại: ' + data.message, 'Error');
+                    }).catch(() => {
+                        toastr.error('Đăng xuất thất bại', 'Error');
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                toastr.error('Đăng xuất thất bại', 'Error');
+            });
+    })
+</script>
+<script th:inline="javascript">
+    $(document).ready(function() {
+        $('#favorite-movies').on('click', '.btn-danger', function() {
+            var favoriteId = $(this).closest('.col').data('favorite-id');
+
+            axios.delete('/api/favorites/' + favoriteId)
+                .then(function(response) {
+                    if (response.status === 200) {
+                        toastr.success('Xóa phim yêu thích thành công');
+                        $(this).closest('.col').remove(); // Remove the card from the UI
+                    }
+                })
+                .catch(function(error) {
+                    toastr.error('Xóa phim yêu thích thất bại');
+                });
+        });
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/web-assets/js/common.js"></script>
+<script src="/web-assets/js/movie-review.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".movie-list").owlCarousel({
+            items: 4,
+            margin: 20,
+            loop: true
+        });
+    });
+</script>
+<script th:inline="javascript">
+    const movie = [[${movie}]];
+    const reviews = [[${reviews}]];
+    const currentUser = [[${session.currentUser}]];
+    console.log(movie)
+    console.log(reviews);
+    console.log(currentUser)
+</script>
+</body>
+</html>

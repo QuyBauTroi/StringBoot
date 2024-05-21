@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en " xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thong tin ca nhan</title>
+    <link rel="shortcut icon" href="/web-assets/image/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/web-assets/image/favicon.ico" type="image/x-icon">
+
+    <!--Css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+          integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
+          integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/web-assets/css/style.css">
+</head>
+<body>
+<th:block th:replace="~{/web/fragment/header :: header}"></th:block>
+
+<section class="py-4 bg-body-secondary">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 " style="background-color: white ;padding: 30px 30px 30px 30px" >
+                <div style="max-width: 500px">
+                    <h2>Thông tin cá nhân</h2>
+                    <div>
+                        <img th:src="${session.currentUser.avatar}" alt="Avatar" style="width: 300px ; height: 300px; border-radius: 50%">
+                    </div>
+                    <form id="form-update">
+                        <h4>Ho ten</h4>
+                        <div class="input-group mb-3 form-group">
+                            <input type="text" class="form-control" placeholder="Nhập tên"  id="input-name" name="name" th:value="${session.currentUser.name}">
+                        </div>
+                        <h4>Email</h4>
+                        <div class="input-group mb-3 form-group">
+                            <input type="text" class="form-control"  id="input-email" name="email" th:value="${session.currentUser.email}" readonly>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary" id="btn-save" style="margin-top: 10px">Cập nhập</button>
+                            <button type="submit" class="btn btn-primary" id="btn-chance-password" style="margin-top: 10px"><a href="/doi-mat-khau" style="color: white">Đổi mật khẩu</a> </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<th:block th:replace="~{/web/fragment/footer :: footer}"></th:block>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/web-assets/js/common.js"></script>
+
+<script th:inline="javascript">
+    const movie = [[${movie}]];
+    const reviews = [[${reviews}]];
+    const currentUser = [[${session.currentUser}]];
+    console.log(movie)
+    console.log(reviews);
+    console.log(currentUser)
+</script>
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        const btnSave = document.getElementById('btn-save');
+
+        btnSave.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            const nameInput = document.getElementById('input-name');
+            const newName = nameInput.value;
+
+            // Call the API to update user's name
+            fetch('/api/auth/update-name', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: newName
+                })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        toastr.success('Tên đã được cập nhật thành công!');
+                        // Update the name displayed in the UI if needed
+                    } else {
+                        toastr.error('Cập nhật tên không thành công. Vui lòng thử lại.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating name:', error);
+                    toastr.error('Cập nhật tên không thành công. Vui lòng thử lại.');
+                });
+        });
+    });
+</script>
+
+<script src="/web-assets/js/movie-review.js"></script>
+</body>
+
+</html>

@@ -44,4 +44,8 @@ public class MovieService {
                 .toList();
     }
 
+    public Movie getMovieById(Integer id) {
+        return movieRepository.findById(id)
+                .orElse(null);
+    }
 }
