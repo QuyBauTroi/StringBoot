@@ -43,7 +43,6 @@ public class AuthService {
         if (currentUser == null) {
             throw new BadRequestException("User not logged in");
         }
-
         currentUser.setName(newName);
         userRepository.save(currentUser);
 
@@ -55,21 +54,14 @@ public class AuthService {
         if (currentUser == null) {
             throw new BadRequestException("User not logged in");
         }
-
-        // Validate old password
         if (!passwordEncoder.matches(request.getOldPassword(), currentUser.getPassword())) {
             throw new BadRequestException("Old password is incorrect");
         }
-
-        // Validate new password and confirm password
         if (!request.getNewPassword().equals(request.getConfirmPassword())) {
             throw new BadRequestException("New password and confirm password do not match");
         }
-
-        // Update user's password
         currentUser.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(currentUser);
-
         session.setAttribute("currentUser", currentUser);
         log.info("Password updated successfully");
     }
