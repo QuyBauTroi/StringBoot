@@ -36,7 +36,7 @@ public class WebController {
         model.addAttribute("listPhimLe", listPhimLe);
         model.addAttribute("listPhimChieuRap", listPhimChieuRap);
         model.addAttribute("listPhimHot", listPhimHot);
-        return "web/index";
+        return "/web/index";
     }
 
     @GetMapping("/phim-bo")

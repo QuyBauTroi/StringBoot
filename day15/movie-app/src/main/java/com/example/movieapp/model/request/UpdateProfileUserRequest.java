@@ -1,5 +1,6 @@
 package com.example.movieapp.model.request;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UpdateProfileUserRequest {
+    @NotEmpty(message = "K được để trống name")
     String name;
 }
 
