@@ -1,38 +1,34 @@
 package com.example.movieapp.rest;
 
+import com.example.movieapp.entity.Movie;
 import com.example.movieapp.entity.Review;
+import com.example.movieapp.model.request.UpsertMovieRequest;
 import com.example.movieapp.model.request.UpsertReviewRequest;
+import com.example.movieapp.service.MovieService;
 import com.example.movieapp.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/reviews")
+@RequestMapping("/api/admin/movies")
 @RequiredArgsConstructor
 public class MovieApi {
-    private final ReviewService reviewService;
+    @Autowired
+    private MovieService movieService;
 
-    // Tạo review
     @PostMapping
-    public ResponseEntity<?> createReview(@RequestBody UpsertReviewRequest request) {
-        Review review = reviewService.createReview(request);
-        return new ResponseEntity<>(review, HttpStatus.CREATED); // 201
+    public ResponseEntity<?> createMovie(@RequestBody UpsertMovieRequest request) {
+        Movie movie = movieService.createMovie(request);
+        return new ResponseEntity<>(movie, HttpStatus.CREATED); // 201
     }
 
-    // Cập nhật review
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateReview(@RequestBody UpsertReviewRequest request, @PathVariable Integer id) {
-        Review review = reviewService.updateReview(id, request);
-        return ResponseEntity.ok(review); // 200
-    }
-
-    // Xóa review
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteReview(@PathVariable Integer id) {
-        reviewService.deleteReview(id);
-        return ResponseEntity.noContent().build(); // 204
+    public ResponseEntity<?> deleteMovie(@PathVariable Integer id) {
+        movieService.deleteMovie(id);
+        return ResponseEntity.noContent().build(); //204
     }
 
 }

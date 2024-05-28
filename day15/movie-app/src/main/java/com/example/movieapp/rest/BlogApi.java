@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/admin/blogs")
@@ -31,5 +34,10 @@ public class BlogApi {
     public ResponseEntity<?> deleteBlog(@PathVariable Integer id) {
         blogService.deleteBlog(id);
         return ResponseEntity.noContent().build(); //204
+    }
+
+    @PostMapping("/{id}/upload-thumbnail")
+    public ResponseEntity<?> uploadThumbnail(@PathVariable Integer id, @RequestParam("file") MultipartFile file){
+        return ResponseEntity.ok(blogService.uploadThumbnail(id,file));
     }
 }
