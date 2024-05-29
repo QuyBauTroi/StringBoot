@@ -22,4 +22,10 @@ public class FileService {
                         "folder", UPLOAD_FOLDER
                 ));
     }
+    public String uploadVideo(MultipartFile video) throws IOException {
+        Map uploadResult = cloudinary.uploader().upload(video.getBytes(), ObjectUtils.asMap(
+                "resource_type", "video"
+        ));
+        return uploadResult.get("url").toString();
+    }
 }

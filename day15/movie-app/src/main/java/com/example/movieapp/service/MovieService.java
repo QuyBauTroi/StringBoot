@@ -14,10 +14,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -29,6 +32,7 @@ public class MovieService {
     private final ActorService actorService;
     private final DirectorService directorService;
 private final GenreService genreService;
+private final FileService fileService;
 
 
     public List<Movie> getMoviesByType(MovieType movieType, Boolean status, Sort sort) {
@@ -92,4 +96,39 @@ private final GenreService genreService;
         movieRepository.save(movie);
         return movie;
     }
+    public Movie updateMovie(UpsertMovieRequest upsertMovieRequest, Integer id) {
+        //Kiểm tra movie có tồn tại hay không
+        Movie movie = movieRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Movie not found"));
+
+        Slugify slugify= Slugify.builder().build();
+        movie.setName(upsertMovieRequest.getName());
+        movie.setSlug(slugify.slugify(upsertMovieRequest.getName()));
+        movie.setDescription(upsertMovieRequest.getDescription());
+        movie.setReleaseYear(upsertMovieRequest.getReleaseYear());
+        movie.setType(upsertMovieRequest.getMovieType());
+        movie.setTrailer(upsertMovieRequest.getTrailer());
+        movie.setUpdatedAt(LocalDateTime.now());
+        movie.setCountry(countryService.getCountryById(upsertMovieRequest.getCountryId()));
+        movie.setActors(actorService.getAllActorById(upsertMovieRequest.getActorIds()));
+        movie.setDirectors(directorService.getAllDirectorById(upsertMovieRequest.getDirectorIds()));
+        movie.setGenres(genreService.getAllGenreById(upsertMovieRequest.getGenreIds()));
+        movieRepository.save(movie);
+        return movie;
+    }
+
+    public String uploadPoster(Integer id, MultipartFile file) {
+        //Kiểm tra movie có tồn tại hay không
+        Movie movie = movieRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Movie not found"));
+        try {
+            Map data = fileService.uploadImage(file);
+            String url = (String) data.get("url");
+            movie.setPoster(url);
+            movieRepository.save(movie);
+
+            return url;
+        }catch (IOException e) {
+            throw new RuntimeException("Error while uploading poster");
+        }
+    }
+
 }

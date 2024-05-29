@@ -211,10 +211,10 @@
                                     <tbody>
                                     <tr th:each="movie : ${movies}">
                                         <td>
-                                            <a th:href="@{/admin/movie/{id} (id=${movie.id})}" th:text="${movie.name}"></a>
+                                            <a th:href="@{/admin/movies/{id} (id=${movie.id})}" th:text="${movie.name}"></a>
                                         </td>
-                                        <td th:href="@{/admin/movie/{id} (id=${movie.id})}" th:text="${movie.type}"></td>
-                                        <td th:href="@{/admin/movie/{id} (id=${movie.id})}" th:text="${movie.releaseYear}"></td>
+                                        <td  th:text="${movie.type}"></td>
+                                        <td  th:text="${movie.releaseYear}"></td>
                                         <td>
                                             <span th:each="country, iterStat : ${movie.getCountry()}">
                                                 <span th:text="${country.getName()}"></span>

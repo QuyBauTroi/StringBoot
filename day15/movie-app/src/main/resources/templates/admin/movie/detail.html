@@ -26,7 +26,9 @@
     <link rel="stylesheet" href="/admin-assets/dist/css/style.css">
     <!--Toastr-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
+          integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="/admin-assets/plugins/select2/css/select2.min.css" />
     <link rel="stylesheet" href="/admin-assets/dist/css/style.css">
 
@@ -214,32 +216,34 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12" id="form-moive">
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label>Tên Phim</label>
-                                            <input  type="text" class="form-control" id="title" th:value="${movie.getName()}" />
+                                            <input  type="text" class="form-control"  th:value="${movie.getName()}" />
                                         </div>
 
                                         <div class="form-group">
                                             <label>Trailer URL</label>
-                                            <input type="text" class="form-control" id="trailer" th:value="${movie.getTrailer()}"/>
+                                            <input type="text" class="form-control"  th:value="${movie.getTrailer()}"/>
                                         </div>
 
                                         <div class="form-group">
                                             <label>Mô tả ngắn</label>
-                                            <textarea id="description" class="form-control" rows="5" th:text="${movie.getDescription()}"></textarea>
+                                            <textarea class="form-control" rows="5" th:text="${movie.getDescription()}"></textarea>
                                         </div>
 
                                         <div class="form-group">
                                             <label>Thể loại</label>
                                             <div class="select2-purple">
-                                                <select class="select2 form-control" multiple="multiple"
-                                                        id="genre">
-                                                    <option th:each="genre :${genres}" th:text="${genre.name}" th:value="${genre.id}">
+                                                <select class="select2 form-control" multiple="multiple" id="genre">
+                                                    <option th:each="genre : ${genres}"
+                                                            th:value="${genre.id}"
+                                                            th:selected="${movie.genres.contains(genre)}"
+                                                            th:text="${genre.name}">Java
                                                     </option>
                                                 </select>
                                             </div>
@@ -247,9 +251,11 @@
                                         <div class="form-group">
                                             <label>Đạo diễn</label>
                                             <div class="select2-purple">
-                                                <select class="select2 form-control" multiple="multiple"
-                                                        id="director">
-                                                    <option th:each="director :${directors}" th:text="${director.name}" th:value="${director.id}">
+                                                <select class="select2 form-control" multiple="multiple" id="director">
+                                                    <option th:each="director : ${directors}"
+                                                            th:value="${director.id}"
+                                                            th:selected="${movie.directors.contains(director)}"
+                                                            th:text="${director.name}">Java
                                                     </option>
                                                 </select>
                                             </div>
@@ -257,9 +263,11 @@
                                         <div class="form-group">
                                             <label>Diễn viên</label>
                                             <div class="select2-purple">
-                                                <select class="select2 form-control" multiple="multiple"
-                                                        id="actor">
-                                                    <option th:each="actor :${actors}" th:text="${actor.name}" th:value="${actor.id}">
+                                                <select class="select2 form-control" multiple="multiple" id="actor">
+                                                    <option th:each="actor : ${actors}"
+                                                            th:value="${actor.id}"
+                                                            th:selected="${movie.actors.contains(actor)}"
+                                                            th:text="${actor.name}">Java
                                                     </option>
                                                 </select>
                                             </div>
@@ -302,11 +310,105 @@
                                     </div>
                                 </div>
                             </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="mb-3">Danh sách tập phim</h4>
+                            <button class="btn btn-primary mb-3" type="button" data-toggle="modal"
+                                    data-target="#modal-episode">Tạo tập phim</button>
+                            <table class="table table-bordered table-hover" id="table-episode">
+                                <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên tập phim</th>
+                                    <th>Video URL</th>
+                                    <th>Thời lượng</th>
+                                    <th>Ngày tạo</th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="episode : ${episodes}">
+                                    <td th:text="${episode.displayOrder}">STT</td>
+                                    <td th:text="${episode.name}">Tên tập phim</td>
+                                    <td th:text="${episode.videoUrl}">Video URL</td>
+                                    <td th:text="${episode.duration}">Thời lượng</td>
+                                    <td th:text="${#temporals.format(episode.createdAt, 'dd/MM/yyyy')}">Ngày tạo
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning text-white" data-id="${episode.id}" data-toggle="modal" data-target="#modal-upload">
+                                            <i class="fas fa-upload"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-primary" type="button" data-toggle="modal"
+                                                data-target="#modal-trailer" data-video-url="${episode.videoUrl}">
+                                            <i class="fas fa-play"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-success">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" data-id="${episode.id}">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="modal fade" id="modal-trailer">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <video width="100%" controls>
+                                                <source src="https://res.cloudinary.com/dchrybytt/video/upload/v1713962259/upload_video/de6x2ox9zq60vq2n87x7.mp4"
+                                                        type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="modal-episode">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Tạo tập phim</h4>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="form-group">
+                                                    <label>Tên tập phim</label>
+                                                    <input type="text" class="form-control" id="episode-name" placeholder="Tập 1, Tập 2, ..."/>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>Thứ tự tập phim</label>
+                                                    <input type="text" class="form-control" id="episode-displayOrder" placeholder="1, 2, 3, ..."/>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="button" class="btn btn-primary" id="create-episode-button">Tạo mới</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
 
         <div class="modal fade" id="modal-xl" aria-hidden="true">
             <div class="modal-dialog modal-xl">
@@ -318,21 +420,35 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>One fine body…</p>
+                        <!-- Video Upload Form -->
+                        <form id="upload-video-form">
+                            <div class="form-group">
+                                <label for="video-file">Choose video file</label>
+                                <input type="file" class="form-control" id="video-file" accept="video/*"/>
+                            </div>
+                            <button type="button" class="btn btn-primary" id="upload-video-button">Upload</button>
+                        </form>
+                        <hr/>
+                        <!-- Video Player -->
+                        <video width="100%" controls id="video-player">
+                            <source src="" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">
-                            Close
-                        </button>
-                        <button type="button" class="btn btn-primary">
-                            Save changes
-                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <!-- jQuery -->
 <script src="/admin-assets/plugins/jquery/jquery.min.js"></script>
@@ -377,7 +493,6 @@
 
     const blog = {
         id: 36870,
-
         thumbnail:
             "https://media.techmaster.vn/api/static/9479/c6iesrs51cof74mrqnfg",
         status: 1,
@@ -498,6 +613,182 @@
         }
     });
 </script>
+<script>
+    document.getElementById('create-episode-button').addEventListener('click', function() {
+
+        const displayOrderInput = document.getElementById('episode-displayOrder').value;
+        const displayOrder = parseInt(displayOrderInput, 10);
+
+        if (isNaN(displayOrder)) {
+            toastr.error('Thứ tự tập phim phải là một số');
+            return;
+        }
+
+        const episodeName = 'Tập ' + displayOrder;
+
+        const episode = {
+            name: episodeName,
+            displayOrder: displayOrder,
+            videoUrl: null,
+            duration: '45',
+            createdAt: new Date().toISOString()
+        };
+
+        fetch('/api/episodes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(episode)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return response.json().then(error => {
+                        throw new Error(error.message);
+                    });
+                }
+            })
+            .then(data => {
+                toastr.success('Tạo tập phim thành công');
+                addEpisodeToTable(data);
+            })
+            .catch(error => {
+                toastr.error('Tạo tập phim thất bại: ' + error.message);
+            });
+    });
+
+    function addEpisodeToTable(episode) {
+        const tableBody = document.getElementById('table-episode').querySelector('tbody');
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+        <td>${episode.displayOrder}</td>
+        <td>${episode.name}</td>
+        <td>${episode.videoUrl}</td>
+        <td>${episode.duration}</td>
+        <td>${new Date(episode.createdAt).toLocaleDateString('vi-VN')}</td>
+        <td>
+            <button class="btn btn-sm btn-warning text-white">
+                <i class="fas fa-upload"></i>
+            </button>
+            <button class="btn btn-sm btn-primary" type="button" data-toggle="modal"
+                    data-target="#modal-trailer">
+                <i class="fas fa-play"></i>
+            </button>
+            <button class="btn btn-sm btn-success">
+                <i class="fas fa-pencil-alt"></i>
+            </button>
+            <button class="btn btn-sm btn-danger">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </td>
+    `;
+
+        let inserted = false;
+        for (let i = 0; i < tableBody.rows.length; i++) {
+            const currentDisplayOrder = parseInt(tableBody.rows[i].cells[0].innerText, 10);
+            if (displayOrder < currentDisplayOrder) {
+                tableBody.insertBefore(row, tableBody.rows[i]);
+                inserted = true;
+                break;
+            }
+        }
+        if (!inserted) {
+            tableBody.appendChild(row);
+        }
+    }
+</script>
+
+<script> // Up video
+    document.addEventListener('DOMContentLoaded', function() {
+        const uploadButton = document.getElementById('upload-video-button');
+        const videoFileInput = document.getElementById('video-file');
+        const videoPlayer = document.getElementById('video-player');
+
+
+        uploadButton.addEventListener('click', function() {
+            const file = videoFileInput.files[0];
+            if (!file) {
+                toastr.error('Please select a video file');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('video', file);
+
+
+            const episodeId = uploadButton.getAttribute('data-id');
+
+            fetch(`/api/episodes/${episodeId}/upload-video`, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        return response.json().then(error => {
+                            throw new Error(error.message);
+                        });
+                    }
+                })
+                .then(data => {
+                    toastr.success('Video uploaded successfully');
+
+                    videoPlayer.querySelector('source').src = data.videoUrl;
+                    videoPlayer.load();
+                })
+                .catch(error => {
+                    toastr.error('Failed to upload video: ' + error.message);
+                });
+        });
+
+
+        document.querySelectorAll('.btn-primary').forEach(button => {
+            button.addEventListener('click', function() {
+                const videoUrl = this.getAttribute('data-video-url');
+                if (videoUrl) {
+                    videoPlayer.querySelector('source').src = videoUrl;
+                    videoPlayer.load();
+                } else {
+                    toastr.error('No video available for this episode');
+                }
+            });
+        });
+    });
+</script>
+<script> // xoa tap
+    document.addEventListener('DOMContentLoaded', function() {
+
+        document.querySelectorAll('.btn-danger').forEach(button => {
+            button.addEventListener('click', function() {
+                const episodeId = this.getAttribute('data-id');
+                if (confirm('Are you sure you want to delete this episode?')) {
+                    fetch(`/api/episodes/${episodeId}`, {
+                        method: 'DELETE'
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                toastr.success('Episode deleted successfully');
+
+                                this.closest('tr').remove();
+                            } else {
+                                return response.json().then(error => {
+                                    throw new Error(error.message);
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            toastr.error('Failed to delete episode: ' + error.message);
+                        });
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 
 </html>

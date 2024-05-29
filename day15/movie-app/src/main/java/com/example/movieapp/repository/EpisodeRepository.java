@@ -9,4 +9,5 @@ public interface EpisodeRepository extends JpaRepository<Episode, Integer> {
     List<Episode> findByMovie_IdOrderByDisplayOrderAsc(Integer movieId);
 
     List<Episode> findByMovie_IdAndMovie_StatusOrderByDisplayOrderAsc(Integer movieId, Boolean status);
+    List<Episode> findAllByOrderByDisplayOrderAsc();
 }

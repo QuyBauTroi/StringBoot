@@ -19,6 +19,7 @@ public class MovieController {
     private final ActorRepository actorRepository;
     private final GenreRepository genreRepository;
     private final MovieService movieService;
+    private final EpisodeRepository episodeRepository;
 
 
     @GetMapping
@@ -30,7 +31,16 @@ public class MovieController {
 
     @GetMapping("/{id}")
     public String getDetailPage(@PathVariable int id, Model model) {
-        model.addAttribute("movies",movieService.getMovieById(id));
+        model.addAttribute("movie", movieService.getMovieById(id));
+        model.addAttribute("countries", countryRepository.findAll());
+        model.addAttribute("directors", directorRepository.findAll());
+        model.addAttribute("actors", actorRepository.findAll());
+        model.addAttribute("genres", genreRepository.findAll());
+        model.addAttribute("movieTypes", MovieType.values());
+
+        // Trả ds tập phim của movie (sắp xếp theo displayOrder tăng dần)
+        model.addAttribute("episodes", episodeRepository.findByMovie_IdOrderByDisplayOrderAsc(id));
+
         return "admin/movie/detail";
     }
 
