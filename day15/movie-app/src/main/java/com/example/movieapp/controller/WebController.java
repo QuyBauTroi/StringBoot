@@ -69,6 +69,25 @@ public class WebController {
         return "web/phim-chieu-rap";
     }
 
+    @GetMapping("/xem-phim/{id}/{slug}")
+    public String getXemPhimPage(Model model,
+                                 @PathVariable Integer id,
+                                 @PathVariable String slug,
+                                 @RequestParam String tap) {
+        Movie movie = movieService.getMovie(id, slug, true);
+        List<Movie> relatedMovies = movieService.getRelatedMovies(id, movie.getType(), true, 6);
+        List<Review> reviews = reviewService.getReviewsByMovie(id);
+        List<Episode> episodes = episodeService.getEpisodeListOfMovie(id, true);
+        Episode currentEpisode = episodeService.getEpisode(id, tap);
+
+        model.addAttribute("movie", movie);
+        model.addAttribute("relatedMovies", relatedMovies);
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("episodes", episodes);
+        model.addAttribute("currentEpisode", currentEpisode);
+        return "web/xem-phim";
+    }
+
     @GetMapping("/phim/{id}/{slug}")
     public String getPhimDetailPage(Model model, @PathVariable Integer id, @PathVariable String slug) {
         Movie movie = movieService.getMovie(id, slug, true);

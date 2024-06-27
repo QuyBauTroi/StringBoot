@@ -24,7 +24,6 @@ public class MovieController {
 
     @GetMapping
     public String getIndexPage(Model model) {
-        // Lấy tất cả bài viết sắp xếp theo created giảm dần
         model.addAttribute("movies", movieService.getAllMovie());
         return "admin/movie/index";
     }

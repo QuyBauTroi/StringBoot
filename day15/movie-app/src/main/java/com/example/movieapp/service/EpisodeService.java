@@ -44,4 +44,16 @@ public class EpisodeService {
             throw new RuntimeException("Episode not found");
         }
     }
+
+    public Episode getEpisode(Integer movieId, String tap) {
+        if (tap.equals("full")) {
+            return episodeRepository
+                    .findByMovie_IdAndMovie_StatusAndDisplayOrder(movieId, true, 1)
+                    .orElse(null);
+        } else {
+            return episodeRepository
+                    .findByMovie_IdAndMovie_StatusAndDisplayOrder(movieId, true, Integer.parseInt(tap))
+                    .orElse(null);
+        }
+    }
 }

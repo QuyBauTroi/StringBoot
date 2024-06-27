@@ -12,5 +12,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CreateFavoriteRequest {
     @NotNull(message = "không được để trống")
+    Integer userId;
+    @NotNull(message = "không được để trống")
     Integer movieId;
 }

@@ -1,6 +1,5 @@
 package com.example.movieapp.service;
 
-import com.example.movieapp.entity.Blog;
 import com.example.movieapp.entity.Movie;
 import com.example.movieapp.exception.ResourceNotFoundException;
 import com.example.movieapp.model.enums.MovieType;

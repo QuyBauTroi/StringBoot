@@ -24,13 +24,13 @@ public class BlogApi {
         return new ResponseEntity<>(blog, HttpStatus.CREATED); //201
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<?> updateBlog(@Valid @PathVariable Integer id, @Valid @RequestBody UpsertBlogRequest blogRequest) {
         Blog blog = blogService.updateBlog(blogRequest, id);
         return ResponseEntity.ok(blog); //200
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteBlog(@PathVariable Integer id) {
         blogService.deleteBlog(id);
         return ResponseEntity.noContent().build(); //204
