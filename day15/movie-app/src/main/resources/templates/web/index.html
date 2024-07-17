@@ -124,52 +124,11 @@
             <a href="#" class="text-primary text-decoration-none">Xem thêm</a>
         </div>
         <div class="row">
-            <div class="col-6">
+            <div class="col-6" th:each="blog :${pageData.getContent()}">
                 <div class="blog-item bg-body-tertiary p-3 rounded mb-4">
-                    <a href="">
-                        <h5>Top 15 Phim Cổ Trang Trung Quốc Hay Không Thể Bỏ Lỡ Năm 2023</h5>
-                        <p class="fst-italic">August 20, 2023</p>
-                        <p class="mb-0">Năm 2023 phim hàn quốc đã có nhiều nội dung được đổi mới và thu hút lượt xem
-                            nhiều hơn,
-                            vậy
-                            đâu là 10 bộ phim hàn quốc hot nhất năm 2023, Cùng Motchill điểm qua ...</p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="blog-item bg-body-tertiary p-3 rounded mb-4">
-                    <a href="">
-                        <h5>Top 15 Phim Cổ Trang Trung Quốc Hay Không Thể Bỏ Lỡ Năm 2023</h5>
-                        <p class="fst-italic">August 20, 2023</p>
-                        <p class="mb-0">Năm 2023 phim hàn quốc đã có nhiều nội dung được đổi mới và thu hút lượt xem
-                            nhiều hơn,
-                            vậy
-                            đâu là 10 bộ phim hàn quốc hot nhất năm 2023, Cùng Motchill điểm qua ...</p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="blog-item bg-body-tertiary p-3 rounded mb-4">
-                    <a href="">
-                        <h5>Top 15 Phim Cổ Trang Trung Quốc Hay Không Thể Bỏ Lỡ Năm 2023</h5>
-                        <p class="fst-italic">August 20, 2023</p>
-                        <p class="mb-0">Năm 2023 phim hàn quốc đã có nhiều nội dung được đổi mới và thu hút lượt xem
-                            nhiều hơn,
-                            vậy
-                            đâu là 10 bộ phim hàn quốc hot nhất năm 2023, Cùng Motchill điểm qua ...</p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="blog-item bg-body-tertiary p-3 rounded mb-4">
-                    <a href="">
-                        <h5>Top 15 Phim Cổ Trang Trung Quốc Hay Không Thể Bỏ Lỡ Năm 2023</h5>
-                        <p class="fst-italic">August 20, 2023</p>
-                        <p class="mb-0">Năm 2023 phim hàn quốc đã có nhiều nội dung được đổi mới và thu hút lượt xem
-                            nhiều hơn,
-                            vậy
-                            đâu là 10 bộ phim hàn quốc hot nhất năm 2023, Cùng Motchill điểm qua ...</p>
-                    </a>
+                    <a th:href="@{/tin-tuc/{id}/{slug}(id=${blog.getId()}, slug=${blog.getSlug()})}" ><h5 th:text="${blog.getTitle}">Top 10 Bộ Phim Cổ Trang Hoa Ngữ Sắp Chiếu Năm 2024</h5></a>
+                    <p th:text="${blog.getCreatedAt}">Jan 23, 2024</p>
+                    <p class="mb-0" th:text="${blog.getDescription}">Phim hoa ngữ năm 2024 với nhiều bom tấn hứa hẹn sẽ gây bão trên màn ảnh Hoa Ngữ vậy cùng điểm 10 bộ phim hoa ngữ sắp ra mắt năm 2024. ...</p>
                 </div>
             </div>
         </div>

@@ -32,12 +32,6 @@ public class MovieService {
     private final DirectorService directorService;
 private final GenreService genreService;
 private final FileService fileService;
-
-
-    public List<Movie> getMoviesByType(MovieType movieType, Boolean status, Sort sort) {
-        return movieRepository.findByTypeAndStatus(movieType, status, sort);
-    }
-
     public Page<Movie> getMoviesByType(MovieType movieType, Boolean status, int page, int pageSize) {
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by("createdAt").descending());
         return movieRepository.findByTypeAndStatus(movieType, status, pageRequest);

@@ -31,6 +31,9 @@ public class BlogController {
         model.addAttribute("comments",commentService.findByBlog_IdOrderByCreatedAtDesc(id));
         return "web/chi-tiet-tin-tuc";
     }
+
+
+    // admin
     @GetMapping("/admin/blogs")
     public String getIndexPage(Model model) {
         // Lấy tất cả bài viết sắp xếp theo created giảm dần

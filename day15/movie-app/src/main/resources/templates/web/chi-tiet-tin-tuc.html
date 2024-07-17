@@ -45,9 +45,17 @@
                     <p class="text-body-tertiary" >by Motchill on <th:block th:text="${blog.getCreatedAt()}"></th:block>
                     </p>
                 </div>
+                <div class="rounded overflow-hidde align-items-center">
+                    <img class="w-1200 h-100"
+                         th:src="${blog.getThumbnail()}">
+                </div>
                 <div th:text="${blog.getContent()}">
                 </div>
+                <div th:text="${blog.getDescription()}">
+                </div>
+
             </div>
+
         </div>
     </div>
 </section>

@@ -2,6 +2,7 @@ const stars = document.querySelectorAll(".star");
 const ratingValue = document.getElementById("rating-value");
 
 let currentRating = 0;
+let currentReviewId = null; // Thêm biến này để lưu review hiện tại khi sửa
 
 stars.forEach((star) => {
     star.addEventListener("mouseover", () => {
@@ -37,20 +38,22 @@ function highlightStars(rating) {
     });
 }
 
-// render review
+//render
 const formatDate = dateStr => {
     const date = new Date(dateStr);
-    const day = `0${date.getDate()}`.slice(-2); // 01 -> 01, 015 -> 15
+    const day = `0${date.getDate()}`.slice(-2);
     const month = `0${date.getMonth() + 1}`.slice(-2);
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
-}
+};
+
 const reviewListEl = document.querySelector(".review-list");
+
 const renderReview = reviews => {
     let html = "";
     reviews.forEach(review => {
         html += `
-            <div class="rating-item d-flex align-items-center mb-3 pb-3">
+            <div class="rating-item d-flex align-items-center mb-3 pb-3" data-review-id="${review.id}">
                 <div class="rating-avatar">
                     <img src="${review.user.avatar}" alt="${review.user.name}">
                 </div>
@@ -84,32 +87,99 @@ const renderReview = reviews => {
         }
                 </div>
             </div>
-        `
-    })
+        `;
+    });
 
     reviewListEl.innerHTML = html;
-}
 
-// Tạo review
+    // Gán sự kiện cho các nút sửa và xóa sau khi render
+    document.querySelectorAll(".btn-edit-review").forEach(btn => {
+        btn.addEventListener("click", handleEditReview);
+    });
+
+    document.querySelectorAll(".btn-delete-review").forEach(btn => {
+        btn.addEventListener("click", handleDeleteReview);
+    });
+};
+
+// Xử lý sự kiện sửa review
+const handleEditReview = (event) => {
+    const reviewItem = event.target.closest(".rating-item");
+    const reviewId = reviewItem.getAttribute("data-review-id");
+    const review = reviews.find(r => r.id === parseInt(reviewId));
+
+    if (review) {
+        currentReviewId = review.id;
+        reviewContentEl.value = review.content;
+        currentRating = review.rating;
+        ratingValue.textContent = `Bạn đã đánh giá ${currentRating} sao.`;
+        highlightStars(currentRating);
+        myModalReviewEl.show();
+    }
+};
+
+
+
+const handleDeleteReview = async (event) => {
+    const reviewItem = event.target.closest(".rating-item");
+    const reviewId = reviewItem.getAttribute("data-review-id");
+
+    if (confirm("Bạn có chắc chắn muốn xóa đánh giá này?")) {
+        try {
+            // Gọi API để xóa bình luận
+            const response = await axios.delete(`/api/reviews/${reviewId}`);
+
+            // Kiểm tra kết quả trả về từ server
+            if (response.status === 204) {
+                // Xóa review khỏi danh sách reviews local
+                for (let i = 0; i < reviews.length; i++) {
+                    if (reviews[i].id === parseInt(reviewId)) {
+                        reviews.splice(i, 1); // Xóa phần tử tại vị trí i
+                        break; // Thoát khỏi vòng lặp sau khi xóa
+                    }
+                }
+
+                // Render lại danh sách reviews
+                renderReview(reviews);
+
+                // Hiển thị thông báo thành công
+                toastr.success("Đánh giá đã được xóa thành công");
+            } else {
+                // Xử lý trường hợp lỗi từ server
+                throw new Error("Không thể xóa đánh giá. Vui lòng thử lại sau.");
+            }
+        } catch (error) {
+            console.error("Lỗi khi xóa đánh giá:", error);
+            toastr.error("Có lỗi xảy ra khi xóa đánh giá");
+        }
+    }
+};
+
+
+
+
+
+
+
+// Tạo hoặc cập nhật review
 const formReviewEl = document.getElementById("form-review");
 const reviewContentEl = document.getElementById("review-content");
 const modalReviewEl = document.getElementById("modal-review");
 const myModalReviewEl = new bootstrap.Modal(modalReviewEl, {
     keyboard: false
-})
+});
 
 modalReviewEl.addEventListener('hidden.bs.modal', event => {
-    console.log("Su kien dong modal")
+    currentReviewId = null;
     currentRating = 0;
     reviewContentEl.value = "";
     ratingValue.textContent = "";
     resetStars();
-})
+});
 
 formReviewEl.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // TODO: Validate các thông tin (sử dụng thư jQuery Validation)
     if (currentRating === 0) {
         alert("Vui lòng chọn số sao");
         return;
@@ -124,25 +194,56 @@ formReviewEl.addEventListener("submit", async (e) => {
         content: reviewContentEl.value,
         rating: currentRating,
         movieId: movie.id
-    }
+    };
 
-    // Gọi API
     try {
-        let res = await axios.post("/api/reviews", data);
-        reviews.unshift(res.data);
+        if (currentReviewId) {
+            await axios.put(`/api/reviews/${currentReviewId}`, data);
+            const index = reviews.findIndex(r => r.id === currentReviewId);
+            reviews[index] = { ...reviews[index], ...data };
+            toastr.success("Bình luận của bạn đã được chỉnh sửa");
+        } else {
+            let res = await axios.post("/api/reviews", data);
+            reviews.unshift(res.data);
+            toastr.success("Đánh giá thành công");
+        }
+
         renderReview(reviews);
-
-        // Dong modal
         myModalReviewEl.hide();
-
-        toastr.success("Đánh giá thành công");
     } catch (e) {
-        console.log(e)
+        console.log(e);
+        toastr.error("Có lỗi xảy ra khi lưu đánh giá");
     }
-})
+});
 
+document.addEventListener('DOMContentLoaded', () => {
+    // Thêm sự kiện cho các nút xóa sau khi trang tải xong
+    document.querySelectorAll('.btn-delete-rv').forEach(button => {
+        button.addEventListener('click', DeleteReview);
+    });
 
+    // Xử lý sự kiện xóa bình luận
+    const DeleteReview = async (event) => {
+        const reviewItem = event.target.closest(".rating-item");
+        const reviewId = reviewItem.getAttribute("data-review-id");
 
-
+        if (confirm("Bạn có chắc chắn muốn xóa đánh giá này?")) {
+            try {
+                const response = await axios.delete(`/api/reviews/${reviewId}`);
+                if (response.status === 204) {
+                    // Xóa phần tử khỏi DOM
+                    reviewItem.remove();
+                    // Hiển thị thông báo thành công
+                    toastr.success("Đánh giá đã được xóa thành công");
+                } else {
+                    throw new Error("Không thể xóa đánh giá. Vui lòng thử lại sau.");
+                }
+            } catch (error) {
+                console.error("Lỗi khi xóa đánh giá:", error);
+                toastr.error("Có lỗi xảy ra khi xóa đánh giá");
+            }
+        }
+    };
+});
 
 

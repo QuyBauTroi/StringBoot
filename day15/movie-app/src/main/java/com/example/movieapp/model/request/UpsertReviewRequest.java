@@ -21,5 +21,3 @@ public class UpsertReviewRequest {
     Integer movieId;
 }
 
-// /api/movies/{id}/reviews
-// /api/reviews

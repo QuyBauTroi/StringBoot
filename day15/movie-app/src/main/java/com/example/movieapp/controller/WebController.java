@@ -2,10 +2,7 @@ package com.example.movieapp.controller;
 
 import com.example.movieapp.entity.*;
 import com.example.movieapp.model.enums.MovieType;
-import com.example.movieapp.service.EpisodeService;
-import com.example.movieapp.service.FavouriteService;
-import com.example.movieapp.service.MovieService;
-import com.example.movieapp.service.ReviewService;
+import com.example.movieapp.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +21,7 @@ public class WebController {
     private final ReviewService reviewService;
     private final EpisodeService episodeService;
     private final FavouriteService favouriteService;
+    private final BlogService blogService;
     private final HttpSession session;
 
     @GetMapping("/")
@@ -32,10 +30,13 @@ public class WebController {
         List<Movie> listPhimBo = movieService.getMoviesByType(MovieType.PHIM_BO, true, 1, 6).getContent();
         List<Movie> listPhimLe = movieService.getMoviesByType(MovieType.PHIM_LE, true, 1, 6).getContent();
         List<Movie> listPhimChieuRap = movieService.getMoviesByType(MovieType.PHIM_CHIEU_RAP, true, 1, 6).getContent();
+        Page<Blog> pageData = blogService.getBlogByStatus(true,1,4);
+        model.addAttribute("listPhimHot", listPhimHot);
+        model.addAttribute("pageData",pageData);
         model.addAttribute("listPhimBo", listPhimBo);
         model.addAttribute("listPhimLe", listPhimLe);
         model.addAttribute("listPhimChieuRap", listPhimChieuRap);
-        model.addAttribute("listPhimHot", listPhimHot);
+
         return "/web/index";
     }
 

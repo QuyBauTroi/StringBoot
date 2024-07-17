@@ -83,11 +83,11 @@ public class ReviewService {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Review not found"));
 
-        User user = (User) session.getAttribute("currentUser");
+        User currentUser = (User) session.getAttribute("currentUser");
 
-        // Kiem tra xem review nay co phai cua user hay khong?
-        if (!review.getUser().getId().equals(user.getId())) {
-            throw new BadRequestException("Not review's owner");
+        // Kiểm tra xem review có thuộc về người dùng hiện tại hay không
+        if (!review.getUser().getId().equals(currentUser.getId())) {
+            throw new BadRequestException("Không thể xóa đánh giá của người khác");
         }
 
         reviewRepository.delete(review);
