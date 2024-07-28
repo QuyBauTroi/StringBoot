@@ -115,6 +115,7 @@ public class WebController {
     public String getInfoUserPage() {
         return "web/thong-tin-ca-nhan";
     }
+
     @GetMapping("/phim-yeu-thich")
     public String phimYeuThich(Model model) {
         User currentUser = (User) session.getAttribute("currentUser");

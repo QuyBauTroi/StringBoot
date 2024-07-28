@@ -16,7 +16,6 @@ public class ActorService {
     public List<Actor> getAllActors() {
         return actorRepository.findAll();
     }
-
     public List<Actor> getAllActorById(List<Integer> ids) {
         return actorRepository.findAllById(ids);
     }

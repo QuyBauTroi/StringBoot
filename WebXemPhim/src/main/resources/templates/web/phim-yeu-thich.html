@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{web/layout/layout :: layout(~{::title},~{:: #css},~{:: #content},~{:: #js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Phim yêu thích</title>
+
+    <th:block id="css">
+        <style>
+            .btnCloseDiv {
+                position: relative;
+                display: inline-block;
+            }
+            .btnCloseDiv.hidden {
+                display: none;
+            }
+            #close-btn {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                background-color: transparent;
+                border: none;
+                font-size: 20px;
+                cursor: pointer;
+                z-index: 1;
+                color: red;
+            }
+
+            #close-btn:hover {
+                color: red;
+            }
+        </style>
+    </th:block>
+
+</head>
+
+<body>
+
+<th:block id="content">
+    <section class="py-4">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h3>Danh sách phim yêu thích</h3>
+            </div>
+            <div class="row movie-list">
+                <div class="col-2 " th:each="favorite :${pageData.getContent()}">
+                    <div class="movie-item btnCloseDiv">
+                        <div class="movie-poster overflow-hidden ">
+                            <a th:href="@{/phim/{id}/{slug}(id=${favorite.getMovie().getId()}, slug=${favorite.getMovie().getSlug()})}">
+                                <img class="w-100 h-100 rounded " th:src="${favorite.getMovie().getPoster()}" alt="movie-poster">
+                            </a>
+                            <button id="close-btn" th:onclick="'closeImage('+${favorite.getMovie().getId()}+')'">&#10006;</button>
+                        </div>
+                        <a style="text-decoration: none; color: black" th:href="@{/phim/{id}/{slug}(id=${favorite.getMovie().getId()}, slug=${favorite.getMovie().getSlug()})}">
+                            <p class="mt-2" th:text="${favorite.getMovie().getName()}"></p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center mt-4 ">
+                <nav aria-label="...">
+                    <ul class="pagination" th:if="${pageData.getTotalPages()!=1}">
+                        <li class="page-item " th:classappend="${currentPage==1 ? 'disabled' : ''}">
+                            <a class="page-link"  th:href="@{/phim-yeu-thich (page=${currentPage-1})}">Previous</a>
+                        </li>
+                        <li class="page-item" th:each="number: ${#numbers.sequence(1, pageData.getTotalPages())}" th:classappend="${currentPage==number ? 'active' :''}">
+                            <a class="page-link" th:href="@{/phim-yeu-thich (page=${number})}" th:text="${number}">1</a>
+                        </li>
+
+                        <li class="page-item" th:classappend="${currentPage==pageData.getTotalPages()? 'disabled':''}">
+                            <a class="page-link" th:href="@{/phim-yeu-thich (page=${currentPage+1})}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+</th:block>
+
+<th:block id="js">
+    <script th:inline="javascript">
+        let favorites = [[${pageData.getContent()}]]
+        const movieList = document.querySelector(".movie-list")
+        const renderFavoriteList = favorites =>{
+            let html=""
+            favorites.forEach(favorite =>{
+                html+=`
+             <div class="col-2">
+                 <div class="movie-item btnCloseDiv">
+                        <div class="movie-poster overflow-hidden ">
+                            <a href="/phim/${favorite.movie.id}/${favorite.movie.slug}">
+                                <img class="w-100 h-100 rounded " src="${favorite.movie.poster}" alt="movie-poster">
+                            </a>
+                            <button id="close-btn" onclick="closeImage(${favorite.movie.id})">&#10006;</button>
+                        </div>
+                        <a style="text-decoration: none; color: black" href="/phim/${favorite.movie.id}/${favorite.movie.slug}">
+                            <p class="mt-2" >${favorite.movie.name}</p>
+                        </a>
+                    </div>
+                 </div>
+            `
+            })
+            movieList.innerHTML=html
+        }
+        const btnClose = document.getElementById("close-btn")
+        const closeImage = async (id) => {
+            const confirm = window.confirm("Bạn có chắc chắn muốn xóa ko")
+            if(confirm){
+                try {
+                    const deleteFavor = await axios.delete(`/api/favorites/${id}`)
+                    console.log("Sự kiện xóa Favor")
+                    console.log(favorites)
+                    favorites=favorites.filter(f=>f.movie.id !==id)
+                    renderFavoriteList(favorites)
+                    toastr.success("Xóa khỏi danh sách yêu thích thành công")
+
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+
+        }
+    </script>
+</th:block>
+
+</body>
+</html>

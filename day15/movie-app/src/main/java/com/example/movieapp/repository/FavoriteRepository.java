@@ -10,6 +10,4 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Integer> {
         List<Favorite> findByUserId(Integer userId);
         boolean existsByUserIdAndMovieId(Integer userId, Integer movieId);
         Optional<Favorite> findByMovieIdAndUserId(Integer movieId, Integer userId);
-
-
 }

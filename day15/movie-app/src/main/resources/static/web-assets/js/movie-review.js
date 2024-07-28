@@ -216,34 +216,4 @@ formReviewEl.addEventListener("submit", async (e) => {
     }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Thêm sự kiện cho các nút xóa sau khi trang tải xong
-    document.querySelectorAll('.btn-delete-rv').forEach(button => {
-        button.addEventListener('click', DeleteReview);
-    });
-
-    // Xử lý sự kiện xóa bình luận
-    const DeleteReview = async (event) => {
-        const reviewItem = event.target.closest(".rating-item");
-        const reviewId = reviewItem.getAttribute("data-review-id");
-
-        if (confirm("Bạn có chắc chắn muốn xóa đánh giá này?")) {
-            try {
-                const response = await axios.delete(`/api/reviews/${reviewId}`);
-                if (response.status === 204) {
-                    // Xóa phần tử khỏi DOM
-                    reviewItem.remove();
-                    // Hiển thị thông báo thành công
-                    toastr.success("Đánh giá đã được xóa thành công");
-                } else {
-                    throw new Error("Không thể xóa đánh giá. Vui lòng thử lại sau.");
-                }
-            } catch (error) {
-                console.error("Lỗi khi xóa đánh giá:", error);
-                toastr.error("Có lỗi xảy ra khi xóa đánh giá");
-            }
-        }
-    };
-});
-
 

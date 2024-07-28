@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{web/layout/layout :: layout(~{::title},~{},~{:: #content},~{})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Phim lẻ</title>
+</head>
+<body>
+<th:block id="content">
+    <section class="py-4">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h3>Danh sách phim lẻ</h3>
+            </div>
+            <div class="row">
+                <div class="col-2" th:each="movie :${pageData.getContent()}">
+                    <div class="movie-item">
+                        <div class="movie-poster overflow-hidden">
+                            <a th:href="@{/phim/{id}/{slug}(id=${movie.getId()}, slug=${movie.getSlug()})}">
+                                <img class="w-100 h-100 rounded " th:src="${movie.getPoster()}" alt="movie-poster">
+                            </a>
+                        </div>
+                        <a style="text-decoration: none; color: black" th:href="@{/phim/{id}/{slug}(id=${movie.getId()}, slug=${movie.getSlug()})}">
+                            <p class="mt-2" th:text="${movie.getName()}"></p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center mt-4 ">
+                <nav aria-label="...">
+                    <ul class="pagination" th:if="${pageData.getTotalPages()!=1}">
+                        <li class="page-item " th:classappend="${currentPage==1 ? 'disabled' : ''}">
+                            <a class="page-link"  th:href="@{/phim-le (page=${currentPage-1})}">Previous</a>
+                        </li>
+                        <li class="page-item" th:each="number: ${#numbers.sequence(1, pageData.getTotalPages())}" th:classappend="${currentPage==number ? 'active' :''}">
+                            <a class="page-link" th:href="@{/phim-le (page=${number})}" th:text="${number}">1</a>
+                        </li>
+
+                        <li class="page-item" th:classappend="${currentPage==pageData.getTotalPages()? 'disabled':''}">
+                            <a class="page-link" th:href="@{/phim-le (page=${currentPage+1})}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+</th:block>
+</body>
+</html>

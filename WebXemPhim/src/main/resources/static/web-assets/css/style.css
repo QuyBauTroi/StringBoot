@@ -1,0 +1,58 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.movie-item .movie-poster img {
+    object-fit: cover;
+    transition: all 0.3s ease-in-out;
+}
+a {
+     color: rgb(33, 37, 41);
+     text-decoration: none;
+ }
+.rating {
+    font-size: 24px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.star {
+    display: inline-block;
+}
+
+.star:hover,
+.star.active {
+    color: #EDBB0E;
+}
+.hidden {
+    display: none;
+}
+
+#movie-poster {
+    height: 400px;
+    object-fit: cover;
+}
+.logo {
+    width: 200px;
+}
+img {
+    max-width: 100%;
+}
+.rounded-circle{
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.actor-poster{
+    flex: 0 0 70px;
+}
+.avatar{
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+}

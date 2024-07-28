@@ -278,11 +278,12 @@ class MovieAppApplicationTests {
 
     @Test
     void save_episodes() {
+        Random random = new Random();
         List<Movie> movies = movieRepository.findAll();
         for (Movie movie : movies) {
             if(movie.getType() == MovieType.PHIM_BO) {
                 // Random 5 -> 10 episodes
-                for (int i = 0; i < new Random().nextInt(6) + 5; i++) {
+                for (int i = 0; i < random.nextInt(6) + 5; i++) {
                     Episode episode = Episode.builder()
                             .name("Tập " + (i + 1))
                             .duration(45)
