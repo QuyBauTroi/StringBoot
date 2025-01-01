@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{web/layout/layout :: layout(~{::title},~{},~{:: #content},~{:: #js})}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+</head>
+<body>
+<th:block id="content">
+    <section style="max-width: 200px; margin: 0 auto; padding: 0; margin-top: 20px; margin-bottom: 20px;">
+        <h1>Đăng ký</h1>
+    </section>
+    <section class="py-4" style="max-width: 900px; border: 2px solid #605c5e; margin: 0 auto; padding: 0; margin-top: 20px; margin-bottom: 20px;">
+        <div class="container">
+            <div class="d-flex justify-content-center align-items-center flex-column">
+                <form id="form-register" class="row g-3" >
+                    <div class="col-12 form-group">
+                        <label  class="form-label">Name</label>
+                        <input type="text" class="form-control" id="input-name" placeholder="Enter your name" name="name">
+                    </div>
+                    <div class="col-12 form-group">
+                        <label  class="form-label">Email</label>
+                        <input type="text" class="form-control" id="input-email" placeholder="Enter your email" name="email">
+                    </div>
+                    <div class="col-12 form-group">
+                        <label  class="form-label">Password</label>
+                        <input type="password" class="form-control" id="passwordInput" placeholder="Enter your password" name="password">
+                        <span class="toggle-password input-group-text" id="togglePassword">
+                        <i class="fa-solid fa-eye"></i>
+                    </span>
+                    </div>
+                    <div class="col-12 form-group">
+                        <label  class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="passwordInputConfirm" placeholder="Enter your password again" name="confirmPassword">
+                        <span class="toggle-password input-group-text" id="togglePasswordConfirm">
+                        <i class="fa-solid fa-eye"></i>
+                    </span>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Sign up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</th:block>
+
+<th:block id="js">
+    <script th:inline="javascript">
+        $('#form-register').validate({
+            rules: {
+                name: {
+                    required:true,
+                },
+                email: {
+                    required: true,
+                    email: true,
+                },
+                password: {
+                    required: true,
+                },
+                confirmPassword:{
+                    required:true,
+                    equalTo: "#passwordInput",
+                }
+            },
+            messages: {
+                name:{
+                    required: "Email k được để name",
+                },
+                email: {
+                    required: "Email k được để trống",
+                    email: "Email k đúng định dạng"
+                },
+                password: {
+                    required: "Mật khẩu không được để trống",
+                },
+                confirmPassword:{
+                    required:"Mật khẩu không được để trống",
+                    equalTo: "Mật khẩu xác nhận không giống với mật khẩu",
+                }
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        const formRegisterEl = document.getElementById("form-register");
+        const nameEl = document.getElementById("input-name");
+        const emailEl = document.getElementById("input-email");
+        const  passwordEl = document.getElementById("passwordInput");
+        const passwordConfirmEl = document.getElementById("passwordInputConfirm");
+
+        formRegisterEl.addEventListener("submit", async (e)=>{
+            e.preventDefault();
+
+            if (!$('#form-register').valid()){
+                return;
+            }
+            const data = {
+                name: nameEl.value,
+                email: emailEl.value,
+                password: passwordEl.value,
+                confirmPassword: passwordConfirmEl.value
+            }
+
+            // Gọi API
+            try {
+                let res = await axios.post("/api/auth/register", data);
+                toastr.success("Đăng ký thành công")
+                setTimeout(()=>{
+                    window.location.href='/'
+                },1000)
+            } catch (e) {
+                console.log(e)
+                toastr.error("Email đã tồn tại")
+            }
+        })
+
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('passwordInput');
+
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            const spanIcon = document.getElementById("togglePassword");
+            spanIcon.innerHTML=type === 'password' ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
+        });
+        const togglePasswordConfirm = document.getElementById('togglePasswordConfirm');
+        const passwordInputConfirm = document.getElementById('passwordInputConfirm');
+
+        togglePasswordConfirm.addEventListener('click', function() {
+            const type = passwordInputConfirm.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInputConfirm.setAttribute('type', type);
+            const spanIcon = document.getElementById("togglePasswordConfirm");
+            spanIcon.innerHTML=type === 'password' ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
+        });
+    </script>
+</th:block>
+</body>
+</html>

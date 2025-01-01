@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{web/layout/layout :: layout(~{::title},~{::#css},~{:: #content},~{:: #js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông tin cá nhân</title>
+
+    <th:block id="css">
+        <style>
+            #input-email:focus {
+                outline: none;
+            }
+        </style>
+    </th:block>
+
+</head>
+<body>
+
+<th:block id="content">
+    <section class="py-4 bg-body-secondary">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 " style="background-color: white ;padding: 30px 30px 30px 30px" >
+                    <div style="max-width: 500px">
+                        <h2>Thông tin cá nhân</h2>
+                        <div>
+                            <img th:src="${session.user.avatar}" alt="Avatar" class="avatar">
+                        </div>
+                        <form id="form-update">
+                            <h4>Ho ten</h4>
+                            <div class="input-group mb-3 form-group">
+                                <input type="text" class="form-control" placeholder="Nhập tên"  id="input-name" name="name" th:value="${session.user.name}">
+                            </div>
+                            <h4>Email</h4>
+                            <div class="input-group mb-3 form-group">
+                                <input type="text" class="form-control"  id="input-email" name="email" th:value="${session.user.email}" readonly>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary" id="btn-save" style="margin-top: 10px">Cập nhập</button>
+                                <button type="submit" class="btn btn-primary" id="btn-chance-password" style="margin-top: 10px"><a href="/doi-mat-khau" style="color: white">Đổi mật khẩu</a> </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</th:block>
+
+<th:block id="js">
+    <script th:inline="javascript">
+        $('#form-update').validate({
+            rules: {
+                name: {
+                    required:true,
+                },
+                email: {
+                    required: true,
+                    email: true,
+                }
+            },
+            messages: {
+                name:{
+                    required: "Email k được để name",
+                },
+                email: {
+                    required: "Email k được để trống",
+                    email: "Email k đúng định dạng"
+                }
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+        let user = [[${session.user}]]
+        const formUpdateEl = document.getElementById("form-update");
+        const nameEl = document.getElementById("input-name");
+        const emailEl = document.getElementById("input-email");
+
+
+        formUpdateEl.addEventListener("submit", async (e)=>{
+            e.preventDefault();
+
+            if (!$('#form-update').valid()){
+                return;
+            }
+            const data = {
+                name: nameEl.value,
+                email: emailEl.value,
+                password: user.password,
+                confirmPassword:user.password,
+            }
+
+            // Gọi API
+            try {
+                let res = await axios.put(`/api/auth/update-profile/${user.id}`, data);
+                toastr.success("Cập nhật thành công")
+                setTimeout(()=>{
+                    window.location.href='/thong-tin-ca-nhan'
+                },1000)
+            } catch (e) {
+                console.log(e)
+                toastr.error("User k tồn tại")
+            }
+        })
+
+    </script>
+</th:block>
+
+</body>
+</html>

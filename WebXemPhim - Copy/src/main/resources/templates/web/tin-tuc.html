@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{web/layout/layout :: layout(~{::title},~{},~{:: #content},~{})}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách blog</title>
+</head>
+<body>
+
+<th:block id="content">
+    <section class="py-4">
+        <div class="container ">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h3>Tin tức</h3>
+            </div>
+
+            <div class="row">
+                <div class="col-6 mt-2" th:each="blog :${pageData.getContent()}">
+                    <div class="bg-body-tertiary p-4 rounded" style="height: 200px;">
+                        <a th:href="@{/tin-tuc/{id}/{slug}(id=${blog.getId()}, slug=${blog.getSlug()})}" ><h5 th:text="${blog.getTitle}">Top 10 Bộ Phim Cổ Trang Hoa Ngữ Sắp Chiếu Năm 2024</h5></a>
+                        <p th:text="${blog.getCreatedAt}">Jan 23, 2024</p>
+                        <p class="mb-0" th:text="${blog.getDescription}">Phim hoa ngữ năm 2024 với nhiều bom tấn hứa hẹn sẽ gây bão trên màn ảnh Hoa Ngữ vậy cùng điểm 10 bộ phim hoa ngữ sắp ra mắt năm 2024. ...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center mt-4 ">
+                <nav aria-label="...">
+                    <ul class="pagination" th:if="${pageData.getTotalPages()!=1}">
+                        <li class="page-item " th:classappend="${currentPage==1 ? 'disabled' : ''}">
+                            <a class="page-link"  th:href="@{/tin-tuc (page=${currentPage-1})}">Previous</a>
+                        </li>
+                        <li class="page-item" th:each="number: ${#numbers.sequence(1, pageData.getTotalPages())}" th:classappend="${currentPage==number ? 'active' :''}">
+                            <a class="page-link" th:href="@{/tin-tuc (page=${number})}" th:text="${number}">1</a>
+                        </li>
+
+                        <li class="page-item" th:classappend="${currentPage==pageData.getTotalPages()? 'disabled':''}">
+                            <a class="page-link" th:href="@{/tin-tuc (page=${currentPage+1})}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+</th:block>
+
+</body>
+</html>
